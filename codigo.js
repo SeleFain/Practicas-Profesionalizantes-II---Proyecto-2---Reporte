@@ -2,15 +2,15 @@
 // Compatible con tablas, listas y formularios básicos
 
 const datosIniciales = [
-  { id: 1, nombre: 'Ana', apellido: 'García', edad: 22, correo: 'ana@email.com' },
-  { id: 2, nombre: 'Luis', apellido: 'Pérez', edad: 28, correo: 'luis@email.com' },
-  { id: 3, nombre: 'María', apellido: 'López', edad: 25, correo: 'maria@email.com' }
+  { codigo: 1, modelo: 'Samsung', descripcion: 'Notebook Samsung Book4 Core 7 512GB RAM 16GB 15.6', precio_unitario: 1530540.0, stock: 10 },
+  { codigo: 2, modelo: 'Toshiba', descripcion: 'Disco Duro portátil 1TB Canvio Basics', precio_unitario: 205536.50, stock: 15 },
+  { codigo: 3, modelo: 'Nisuta', descripcion: 'Teclado Multimedia Bluetooth con batería recargable', precio_unitario: 30500.70, stock: 10 }
 ];
 
 let datos = [...datosIniciales];
 
 function obtenerElemento(id, fallback = null) {
-  return document.getElementById(id) || fallback;
+  return document.getElementById(codigo) || fallback;
 }
 
 function renderTabla() {
@@ -24,11 +24,11 @@ function renderTabla() {
     .map(
       (item) => `
         <tr>
-          <td>${item.id ?? ''}</td>
-          <td>${item.nombre ?? ''}</td>
-          <td>${item.apellido ?? ''}</td>
-          <td>${item.edad ?? ''}</td>
-          <td>${item.correo ?? ''}</td>
+          <td>${item.codigo ?? ''}</td>
+          <td>${item.modelo ?? ''}</td>
+          <td>${item.descripcion ?? ''}</td>
+          <td>${item.precio_unitario ?? ''}</td>
+          <td>${item.stock ?? ''}</td>
         </tr>
       `
     )
@@ -51,9 +51,9 @@ function renderLista() {
     .map(
       (item) => `
         <li class="list-group-item">
-          <strong>${item.nombre} ${item.apellido}</strong>
-          <span class="d-block text-muted">Edad: ${item.edad} años</span>
-          <span class="d-block text-muted">Correo: ${item.correo}</span>
+          <strong>${item.modelo} ${item.descripcion}</strong>
+          <span class="d-block text-muted">Precio: $ ${item.precio_unitario}</span>
+          <span class="d-block text-muted">Cantidad: ${item.stock}</span>
         </li>
       `
     )
@@ -71,9 +71,9 @@ function mostrarDatos() {
       (item) => `
         <div class="card mb-2">
           <div class="card-body">
-            <h5 class="card-title">${item.nombre} ${item.apellido}</h5>
-            <p class="card-text mb-1"><strong>Edad:</strong> ${item.edad}</p>
-            <p class="card-text mb-0"><strong>Correo:</strong> ${item.correo}</p>
+            <h5 class="card-title">${item.modelo} ${item.descripcion}</h5>
+            <p class="card-text mb-1"><strong>Precio: $</strong> ${item.precio_unitario}</p>
+            <p class="card-text mb-0"><strong>Cantidad:</strong> ${item.stock}</p>
           </div>
         </div>
       `
@@ -98,11 +98,11 @@ function buscarDatos(texto) {
 
   return datos.filter((item) => {
     const valores = [
-      item.nombre,
-      item.apellido,
-      item.correo,
-      String(item.edad),
-      String(item.id)
+      item.modelo,
+      item.descripcion,
+      item.stock,
+      String(item.precio_unitario),
+      String(item.codigo)
     ];
     return valores.some((valor) => String(valor).toLowerCase().includes(filtro));
   });
@@ -120,22 +120,22 @@ function agregarDato(event) {
   const form = obtenerElemento('formDatos');
   if (!form) return;
 
-  const nombre = obtenerElemento('nombre')?.value?.trim() || '';
-  const apellido = obtenerElemento('apellido')?.value?.trim() || '';
-  const edad = Number(obtenerElemento('edad')?.value || 0);
-  const correo = obtenerElemento('correo')?.value?.trim() || '';
+  const modelo = obtenerElemento('modelo')?.value?.trim() || '';
+  const descripcion = obtenerElemento('descripcion')?.value?.trim() || '';
+  const precio_unitario = Number(obtenerElemento('precio_unitario')?.value || 0);
+  const stock = obtenerElemento('stock')?.value?.trim() || '';
 
-  if (!nombre || !apellido || !correo) {
+  if (!modelo || !descripcion || !stock) {
     alert('Completa los campos obligatorios');
     return;
   }
 
   datos.push({
-    id: Date.now(),
-    nombre,
-    apellido,
-    edad,
-    correo
+    codigo: Date.now(),
+    modelo,
+    descripcion,
+    precio_unitario,
+    stock
   });
 
   form.reset();
@@ -171,11 +171,11 @@ function inicializarApp() {
               .map(
                 (item) => `
                   <tr>
-                    <td>${item.id ?? ''}</td>
-                    <td>${item.nombre ?? ''}</td>
-                    <td>${item.apellido ?? ''}</td>
-                    <td>${item.edad ?? ''}</td>
-                    <td>${item.correo ?? ''}</td>
+                    <td>${item.codigo ?? ''}</td>
+                    <td>${item.modelo ?? ''}</td>
+                    <td>${item.descripcion ?? ''}</td>
+                    <td>${item.precio_unitario ?? ''}</td>
+                    <td>${item.stock ?? ''}</td>
                   </tr>
                 `
               )
@@ -189,9 +189,9 @@ function inicializarApp() {
               .map(
                 (item) => `
                   <li class="list-group-item">
-                    <strong>${item.nombre} ${item.apellido}</strong>
-                    <span class="d-block text-muted">Edad: ${item.edad} años</span>
-                    <span class="d-block text-muted">Correo: ${item.correo}</span>
+                    <strong>${item.modelo} ${item.descripcion}</strong>
+                    <span class="d-block text-muted">Precio: $ ${item.precio_unitario}</span>
+                    <span class="d-block text-muted">Cantidad: ${item.stock}</span>
                   </li>
                 `
               )
@@ -206,9 +206,9 @@ function inicializarApp() {
                 (item) => `
                   <div class="card mb-2">
                     <div class="card-body">
-                      <h5 class="card-title">${item.nombre} ${item.apellido}</h5>
-                      <p class="card-text mb-1"><strong>Edad:</strong> ${item.edad}</p>
-                      <p class="card-text mb-0"><strong>Correo:</strong> ${item.correo}</p>
+                      <h5 class="card-title">${item.modelo} ${item.descripcion}</h5>
+                      <p class="card-text mb-1"><strong>Precio: $</strong> ${item.precio_unitario}</p>
+                      <p class="card-text mb-0"><strong>Cantidad:</strong> ${item.stock}</p>
                     </div>
                   </div>
                 `
@@ -223,11 +223,11 @@ function inicializarApp() {
               .map(
                 (item) => `
                   <tr>
-                    <td>${item.id ?? ''}</td>
-                    <td>${item.nombre ?? ''}</td>
-                    <td>${item.apellido ?? ''}</td>
-                    <td>${item.edad ?? ''}</td>
-                    <td>${item.correo ?? ''}</td>
+                    <td>${item.codigo ?? ''}</td>
+                    <td>${item.modelo ?? ''}</td>
+                    <td>${item.descripcion ?? ''}</td>
+                    <td>${item.precio_unitario ?? ''}</td>
+                    <td>${item.stock ?? ''}</td>
                   </tr>
                 `
               )
