@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Reporte Inventario</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    </head>
+    <body>
+        <div class="contenedor">
+            <h1>Inventario Tienda Informática</h1>
+            <br>
+            <!--Definiendo los filtros-->
+            <div class="panel">
+                <h2>Filtros y Ordenamiento</h2>
+                    <div class="actions" style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                    <!-- Input de búsqueda por texto -->
+                        <input type="text" id="buscarDatos" placeholder="Buscar por modelo o descripción..." style="padding: 10px; border-radius: 8px; border: 1px solid var(--border); width: 250px;">
+                    <!-- Selector de la columna por la cual ordenar -->
+                        <select id="filtroColumna" style="padding: 10px; border-radius: 8px; border: 1px solid var(--border);">
+                            <option value="0">Código</option>
+                            <option value="1">Modelo</option>
+                            <option value="2">Descripción</option>
+                            <option value="3">Precio Unitario</option>
+                            <option value="4">Stock</option>
+                        </select>
+                    <!-- Selector de orden (Ascendente o Descendente) -->
+                        <select id="filtroOrden" style="padding: 10px; border-radius: 8px; border: 1px solid var(--border);">
+                            <option value="asc">Ascendente (A-Z / Menor a Mayor)</option>
+                            <option value="desc">Descendente (Z-A / Mayor a Menor)</option>
+                        </select>
+                        <button class="secondary-btn" id="limpiarDatos">Reiniciar</button>
+                    </div>
+            <br>
+            <!--Definiendo la tabla del inventario-->
+            <div class="table-wrap">
+                <table id="tablaDatos">
+                    <thead>
+                        <tr>
+                        <th>Código</th>
+                        <th>Producto / Modelo</th>
+                        <th>Descripción</th>
+                        <th>Precio Unitario</th>
+                        <th>Stock</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyDatos">
+                        {% for producto in productos %}
+                            <tr>
+                            <!--Esta parte corresponde a la muestra de los datos en cada columna-->
+                            <td>{{ producto.codigo }}</td> 
+                                <td>{{ producto.modelo }}</td>
+                                <td>{{ producto.descripcion }}</td>
+                                <td>${{ producto.precio_unitario }}</td>
+                                <td>
+                                    <span class="status active">{{ producto.stock }}</span>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <script src="{{ url_for('static', filename='codigo.js') }}"></script>
+    </body>
+</html>
